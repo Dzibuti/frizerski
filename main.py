@@ -16,6 +16,14 @@ async def frizeri():
 async def create_frizer (frizer:Frizer) -> FrizerInDB:
     return service.create_frizer(frizer=frizer)
 
+@app.delete("/frizeri/")
+async def delete_frizer (frizer:Frizer) -> FrizerInDB:
+        return service.delete_frizer(frizer=frizer)
+
+
+@app.put("/frizeri/")
+async def put_frizer (frizer:FrizerInDB):
+    return service.put_frizer(frizer=frizer)
 
 @app.get("/frizeri/{frizer_id}/")
 async def root(frizer_id: int):
