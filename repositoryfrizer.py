@@ -3,12 +3,18 @@ from fastapi_sqlalchemy import db
 from model import Frizer as FrizerModel
 from fastapi import HTTPException, status
 
-def find_by_id(frizer):
-    db.session.query(FrizerModel).filter(
-        FrizerModel.id == frizer.id).first()
+def find_by_id(frizer_id:int):
+    frizer = db.session.query(FrizerModel).filter(
+        FrizerModel.id == frizer_id).first()
+    if frizer == None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Frizer sa trazenim ID-ijem ({frizer_id}) ne postoji")
+    return frizer
+        
+    
 
-def get_all():
+def get_all() -> Frizer:
     frizeri=db.session.query(FrizerModel).all()
+   # print (frizeri[0].zauzet_termini)
     return frizeri
 
 def create(frizer:Frizer):
@@ -18,32 +24,25 @@ def create(frizer:Frizer):
     db.session.refresh(dodat_frizer)
     return dodat_frizer
 
-def put(frizer:FrizerInDB):
-    novi_frizer=FrizerModel(**frizer.dict())
-    nadjen_frizer = find_by_id(novi_frizer=novi_frizer)
-    if nadjen_frizer.id == novi_frizer.id:
-        db.session.query(FrizerModel).update(
-            {"name":novi_frizer.name, 
-             "pocetak_radnog_vremena": novi_frizer.pocetak_radnog_vremena,
-             "kraj_radnog_vremena": novi_frizer.kraj_radnog_vremena})
-        return
-    return novi_frizer
+def patch(frizer:FrizerInDB):
+    nadjen_frizer = find_by_id(frizer.id)
+    nadjen_frizer.pocetak_radnog_vremena = frizer.pocetak_radnog_vremena
+    nadjen_frizer.kraj_radnog_vremena = frizer.kraj_radnog_vremena
+    db.session.commit()
+    return nadjen_frizer
     
 
-def patch(frizer:Frizer):
-    frizer=FrizerModel(**frizer.dict())
-    nadjen_frizer=find_by_id(frizer=frizer)
-    if nadjen_frizer != frizer:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Frizer ne postoji")
-    db.session.query.update({"pocetak_radnog_vremena": frizer.pocetak_radnog_vremena,
-             "kraj_radnog_vremena": frizer.kraj_radnog_vremena})
+def put(frizer:FrizerInDB):
+    nadjen_frizer=find_by_id(frizer.id)
+    db.session.query(FrizerModel).update({
+             "name": nadjen_frizer.name,
+             "pocetak_radnog_vremena": nadjen_frizer.pocetak_radnog_vremena,
+             "kraj_radnog_vremena": nadjen_frizer.kraj_radnog_vremena})
+    return nadjen_frizer
 
 
-def delete_frizer(frizer:Frizer):
-    frizer_za_brisanje=FrizerModel(**frizer.dict())
-    pronandjen_frizer = find_by_id(frizer_za_brisanje=frizer_za_brisanje)
-    if frizer_za_brisanje != pronandjen_frizer:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Frizer ne postoji")
-    db.session.delete(frizer_za_brisanje)
+def delete_frizer(frizer_id:int):
+    pronandjen_frizer = find_by_id(frizer_id=frizer_id)
+    db.session.delete(pronandjen_frizer)
     db.session.commit()
-    return frizer_za_brisanje
+    return pronandjen_frizer

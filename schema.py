@@ -11,11 +11,14 @@ class Zauzet_termin (BaseModel):
     class Config:
         orm_mode = True
 
+class TerminInDB (Zauzet_termin):
+    id: int
+
 class Frizer(BaseModel):
     name: str
     pocetak_radnog_vremena: datetime.datetime
     kraj_radnog_vremena: datetime.datetime
-    zauzet_termin: list[Zauzet_termin] | list = []
+    zauzet_termini: list[Zauzet_termin] | list = []
     
     class Config:
         orm_mode = True

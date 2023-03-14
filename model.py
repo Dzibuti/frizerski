@@ -1,5 +1,5 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped
 from database import Base
 import datetime
 
@@ -11,8 +11,11 @@ class Frizer (Base):
     name = Column(String(50), unique=False, index=True)
     pocetak_radnog_vremena=Column(DateTime)
     kraj_radnog_vremena=Column(DateTime)
-    
-    zauzet_termin=relationship("Zauzet_termin", backref="frizeri")
+    zauzet_termini= relationship(
+        "Zauzet_termin",
+        uselist=True,
+        lazy="selectin"
+    )
 
 class Zauzet_termin(Base):
     __tablename__ = "zauzeti_termini"
@@ -21,4 +24,5 @@ class Zauzet_termin(Base):
     frizer_id=Column(Integer, ForeignKey("frizeri.id"))
     datum=Column(DateTime)
 
+    
 
