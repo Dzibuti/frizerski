@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 import datetime
-
+from typing import Union
 
 
 
@@ -18,7 +18,7 @@ class Frizer(BaseModel):
     name: str
     pocetak_radnog_vremena: datetime.datetime
     kraj_radnog_vremena: datetime.datetime
-    zauzet_termini: list[Zauzet_termin] | list = []
+    zauzet_termini: list[Zauzet_termin] = []
     
     class Config:
         orm_mode = True
