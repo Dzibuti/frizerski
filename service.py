@@ -22,8 +22,8 @@ def patch (frizer:FrizerInDB):
 def get_all_termin():
     return repositorytermin.get_all()
 
-def create_termin(termin: Zauzet_termin):
-    return repositorytermin.create(termin=termin)
+def create_termin(frizer_id :int, termin: Zauzet_termin):
+    return repositorytermin.create(frizer_id, termin=termin)
 
 def delete_termin(termin_id: int):
     return repositorytermin.delete_termin(termin_id=termin_id)

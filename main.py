@@ -41,4 +41,4 @@ async def delete_termin(termin_id: int)-> TerminInDB:
 
 @app.post("/frizeri/{frizer_id}/termini")
 async def create_termin (frizer_id: int, termin:Zauzet_termin) -> TerminInDB:
-    return service.create_termin(termin=termin)
+    return service.create_termin(frizer_id=frizer_id, termin=termin)

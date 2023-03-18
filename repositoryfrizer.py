@@ -12,9 +12,8 @@ def find_by_id(frizer_id:int):
         
     
 
-def get_all() -> Frizer:
+def get_all():
     frizeri=db.session.query(FrizerModel).all()
-   # print (frizeri[0].zauzet_termini)
     return frizeri 
 
 def create(frizer:Frizer):

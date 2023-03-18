@@ -17,8 +17,8 @@ def get_all():
     zauzeti_termini=db.session.query(TerminModel).all()
     return zauzeti_termini
 
-def create(termin:Zauzet_termin):
-    dodat_termin= TerminModel(**termin.dict())
+def create(frizer_id: int,termin:Zauzet_termin):
+    dodat_termin= TerminModel(**termin.dict(), frizer_id=frizer_id)
     db.session.add(dodat_termin)
     db.session.commit()
     db.session.refresh(dodat_termin)
