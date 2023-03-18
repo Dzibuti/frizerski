@@ -1,6 +1,6 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship, Mapped
-from database import Base
+from database import Base, engine
 import datetime
 
 class Frizer (Base):
@@ -26,3 +26,4 @@ class Zauzet_termin(Base):
 
     
 
+Base.metadata.create_all(bind=engine)
