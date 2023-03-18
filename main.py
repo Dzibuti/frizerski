@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from schema import Frizer, Zauzet_termin, FrizerInDB, TerminInDB
+from schema import Frizer, Zauzet_termin, FrizerInDB, TerminInDB, GetAllFrizeriResponse
 import service
 from fastapi_sqlalchemy import DBSessionMiddleware
 from database import DATABASE_URL
@@ -9,8 +9,9 @@ app = FastAPI()
 app.add_middleware(DBSessionMiddleware, db_url=DATABASE_URL)
 
 @app.get("/frizeri/")
-async def frizeri():
-    return service.get_all()
+async def frizeri() -> GetAllFrizeriResponse:
+    frizeri = service.get_all()
+    return {"frizeri":frizeri}
 
 @app.post("/frizeri/")
 async def create_frizer (frizer:Frizer) -> FrizerInDB:

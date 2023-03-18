@@ -25,7 +25,12 @@ class Frizer(BaseModel):
     
 class FrizerInDB(Frizer):
     id: int
-    
+
+class GetAllFrizeriResponse(BaseModel):
+    frizeri: list[
+        FrizerInDB
+    ]
+
 
 
 
